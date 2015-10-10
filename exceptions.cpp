@@ -16,14 +16,16 @@ Exception::Exception() {
 //метод, показывающий окно с ошибкой, если ошибка генерирована не объектом QSQlDatabase(метод перегружен)
 void Exception::showError(int code) {
     //итератор словаря
-    QMap<QString,QString>::iterator it = errors.begin();
+    QMap<int,QString>::iterator it = errors.begin();
     //цикл поиска нужной ошибки по коду
     for(;it != errors.end(); ++it)
     {
         if(it.key() == code)
         {
             //открывание окна с текстом ошибки
-            QErrorMessage.showMessage(it.value());
+            QErrorMessage em;
+
+            em.showMessage(it.value());
 
         }
 
@@ -33,7 +35,9 @@ void Exception::showError(int code) {
 //метод, показывающий окно с ошибкой, если ошибка генерирована объектом QSQlDatabase(метод перегружен)
 void Exception::showError(QSqlDatabase db) {
 
-    QErrorMessage.showMessage(db.lastError());
+    QErrorMessage em;
+
+    em.showMessage(db.lastError().databaseText());
 
 }
 
